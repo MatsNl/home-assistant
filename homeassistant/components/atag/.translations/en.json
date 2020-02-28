@@ -1,20 +1,12 @@
 {
-<<<<<<< HEAD
-  "title": "Atag",
-  "config": {
-=======
   "config": {
     "title": "Atag",
->>>>>>> add atag integration
     "step": {
       "user": {
         "title": "Connect to the device",
         "data": {
           "host": "Host",
-<<<<<<< HEAD
-=======
           "email": "Email (optional)",
->>>>>>> add atag integration
           "port": "Port (10000)"
         }
       }
