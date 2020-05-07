@@ -1,5 +1,5 @@
 """Config flow for the Atag component."""
-from pyatag import DEFAULT_PORT, AtagDataStore, AtagException
+from pyatag import DEFAULT_PORT, AtagException, AtagOne
 import voluptuous as vol
 
 from homeassistant import config_entries
@@ -32,14 +32,15 @@ class AtagConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return await self._show_form()
         session = async_get_clientsession(self.hass)
         try:
-            atag = AtagDataStore(session, **user_input)
-            await atag.async_check_pair_status()
+            atag = AtagOne(session=session, **user_input)
+            await atag.authorize()
+            await atag.update(force=True)
 
         except AtagException:
             return await self._show_form({"base": "connection_error"})
 
-        user_input.update({CONF_DEVICE: atag.device})
-        return self.async_create_entry(title=atag.device, data=user_input)
+        user_input.update({CONF_DEVICE: atag.id})
+        return self.async_create_entry(title=atag.id, data=user_input)
 
     @callback
     async def _show_form(self, errors=None):

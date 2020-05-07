@@ -44,7 +44,7 @@ async def test_connection_error(hass):
     """Test we show user form on Atag connection error."""
 
     with patch(
-        "homeassistant.components.atag.config_flow.AtagDataStore.async_check_pair_status",
+        "homeassistant.components.atag.config_flow.AtagOne.authorize",
         side_effect=AtagException(),
     ):
         result = await hass.config_entries.flow.async_init(
@@ -60,10 +60,8 @@ async def test_connection_error(hass):
 
 async def test_full_flow_implementation(hass):
     """Test registering an integration and finishing flow works."""
-    with patch(
-        "homeassistant.components.atag.AtagDataStore.async_check_pair_status",
-    ), patch(
-        "homeassistant.components.atag.AtagDataStore.device",
+    with patch("homeassistant.components.atag.AtagOne.authorize",), patch(
+        "homeassistant.components.atag.AtagOne.id",
         new_callable=PropertyMock(return_value="device_identifier"),
     ):
         result = await hass.config_entries.flow.async_init(

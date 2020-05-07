@@ -6,7 +6,7 @@
         "title": "Connect to the device",
         "data": {
           "host": "Host",
-          "email": "Email (optional)",
+          "email": "Email",
           "port": "Port (10000)"
         }
       }
