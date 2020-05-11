@@ -68,7 +68,6 @@ class AtagDataUpdateCoordinator(DataUpdateCoordinator):
                 await self.atag.update()
             except AtagException as error:
                 raise UpdateFailed(error)
-
         return self.atag.report
 
 

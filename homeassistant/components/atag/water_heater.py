@@ -3,7 +3,7 @@ from homeassistant.components.water_heater import (
     ATTR_TEMPERATURE,
     STATE_ECO,
     STATE_PERFORMANCE,
-    WaterHeaterDevice,
+    WaterHeaterEntity,
 )
 from homeassistant.const import STATE_OFF, TEMP_CELSIUS
 
@@ -19,7 +19,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     async_add_entities([AtagWaterHeater(coordinator, WATER_HEATER)])
 
 
-class AtagWaterHeater(AtagEntity, WaterHeaterDevice):
+class AtagWaterHeater(AtagEntity, WaterHeaterEntity):
     """Representation of an ATAG water heater."""
 
     @property
@@ -49,7 +49,7 @@ class AtagWaterHeater(AtagEntity, WaterHeaterDevice):
         """List of available operation modes."""
         return OPERATION_LIST
 
-    async def set_temperature(self, **kwargs):
+    async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
         if await self.coordinator.atag.dhw.set_temp(kwargs.get(ATTR_TEMPERATURE)):
             self.async_write_ha_state()

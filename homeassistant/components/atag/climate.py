@@ -1,7 +1,7 @@
 """Initialization of ATAG One climate platform."""
 from typing import List, Optional
 
-from homeassistant.components.climate import ClimateDevice
+from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
     CURRENT_HVAC_HEAT,
     CURRENT_HVAC_IDLE,
@@ -36,7 +36,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     async_add_entities([AtagThermostat(coordinator, CLIMATE)])
 
 
-class AtagThermostat(AtagEntity, ClimateDevice):
+class AtagThermostat(AtagEntity, ClimateEntity):
     """Atag climate device."""
 
     @property
@@ -59,7 +59,7 @@ class AtagThermostat(AtagEntity, ClimateDevice):
     @property
     def hvac_action(self) -> Optional[str]:
         """Return the current running hvac operation."""
-        if self.atag.cv_status:
+        if self.coordinator.atag.climate.status:
             return CURRENT_HVAC_HEAT
         return CURRENT_HVAC_IDLE
 
@@ -73,12 +73,12 @@ class AtagThermostat(AtagEntity, ClimateDevice):
     @property
     def current_temperature(self) -> Optional[float]:
         """Return the current temperature."""
-        return self.atag.temperature
+        return self.coordinator.atag.climate.temperature
 
     @property
     def target_temperature(self) -> Optional[float]:
         """Return the temperature we try to reach."""
-        return self.atag.target_temperature
+        return self.coordinator.atag.climate.target_temperature
 
     @property
     def preset_mode(self) -> Optional[str]:
